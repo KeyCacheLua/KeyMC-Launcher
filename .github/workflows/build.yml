@@ -41,19 +41,19 @@ jobs:
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v2
         with:
-          name: Releases
+          name: Windows Release
           path: 'dist/*.exe'
 
       - name: Upload Mac Artifact
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v2
         with:
-          name: Releases
+          name: Mac Release
           path: 'dist/*.dmg'
       
       - name: Upload Linux Artifact
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
         with:
-          name: Releases
+          name: Linux Release
           path: 'dist/*.AppImage'
