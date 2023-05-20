@@ -37,9 +37,23 @@ jobs:
         run: npm run dist
         shell: bash
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload Windows Artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v2
         with:
-          name: dist-without-markdown
-          path: |
-            dist
+          name: Releases
+          path: 'dist/*.exe'
+
+      - name: Upload Mac Artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: 'dist/*.dmg'
+      
+      - name: Upload Linux Artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Releases
+          path: 'dist/*.AppImage'
