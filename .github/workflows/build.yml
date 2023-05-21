@@ -31,29 +31,13 @@ jobs:
         run: npm ci
         shell: bash
 
-      - name: Build
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run dist
-        shell: bash
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          # GitHub token, automatically provided to the action
+          # (No need to define this secret in the repo settings)
+          github_token: ${{ secrets.github_token }}
 
-      - name: Upload Windows Artifact
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
-        with:
-          name: Windows Release
-          path: 'dist/*.exe'
-
-      - name: Upload Mac Artifact
-        if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
-        with:
-          name: Mac Release
-          path: 'dist/*.dmg'
-      
-      - name: Upload Linux Artifact
-        if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
-        with:
-          name: Linux Release
-          path: 'dist/*.AppImage'
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # release the app after building
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
